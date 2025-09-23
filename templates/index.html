@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block title %}Home — AtmosAPI{% endblock %}
+
+{% block content %}
+<!-- hero: home.jpg full-bleed, no extra color -->
+<section class="hero" style="background-image: url('{{ url_for('static', filename='images/home.jpg') }}');">
+  <div class="hero-inner text-center">
+    <h1 class="hero-title">AtmosAPI — Instant Weather</h1>
+
+    <form method="POST" action="{{ url_for('weather') }}" class="row g-3 justify-content-center mt-3">
+      <div class="col-md-4">
+        <input name="city" class="form-control form-control-lg" placeholder="Enter city (e.g. New Delhi)" required>
+      </div>
+      <div class="col-md-3">
+        <input name="time" type="time" class="form-control form-control-lg" />
+      </div>
+      <div class="col-auto">
+        <button class="btn btn-primary btn-lg" type="submit"><i class="fas fa-search"></i> Get Weather</button>
+      </div>
+    </form>
+  </div>
+</section>
+
+<!-- Flash cards below -->
+<section class="container mt-5">
+  <div class="row g-4">
+    <div class="col-md-4">
+      <div class="card feature-card p-4 h-100">
+        <div class="card-body text-center">
+          <i class="fas fa-cloud fa-2x text-primary mb-3"></i>
+          <h5>Accurate Forecast</h5>
+          <p>Real-time data from OpenWeatherMap.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card feature-card p-4 h-100">
+        <div class="card-body text-center">
+          <i class="fas fa-tint fa-2x text-info mb-3"></i>
+          <h5>Rain Prediction</h5>
+          <p>Instant rain chance with a visual gauge.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card feature-card p-4 h-100">
+        <div class="card-body text-center">
+          <i class="fas fa-volume-up fa-2x text-success mb-3"></i>
+          <h5>Voice Assistant</h5>
+          <p>Listen to the forecast using your browser.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

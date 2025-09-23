@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Advanced Splash</title>
+<style>
+  html,body{
+    margin:0;
+    height:100%;
+    overflow:hidden;
+  }
+
+  /* Splash container */
+  #splash {
+    position:fixed;
+    inset:0;
+    z-index:9999;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background: url("{{ url_for('static', filename='images/rain.gif') }}") no-repeat center center fixed;
+    background-size:cover;
+    /* background-size: ; */
+    animation: fadeOut 1s ease forwards;
+    animation-delay:3s; /* total time before reveal */
+  }
+
+  /* Canvas for particles if needed */
+  #particleCanvas {
+    position:absolute;
+    inset:0;
+  }
+
+  /* Logo */
+  #logo {
+    width:200px;
+    animation: float 6s ease-in-out infinite,
+               moveAcross 6s ease-in-out infinite;
+  }
+
+  /* Main content (hidden initially) */
+  #content {
+    opacity:0;
+    padding:40px;
+    color:#fff;
+    animation: fadeIn 1s ease forwards;
+    animation-delay:3s;
+  }
+
+  @keyframes fadeOut {
+    to { opacity:0; pointer-events:none; }
+  }
+  @keyframes fadeIn {
+    to { opacity:1; }
+  }
+  @keyframes moveAcross {
+    0%   { transform:translateX(0%) rotate(0deg); }
+    50%  { transform:translateX(0%) rotate(0deg); }
+    100% { transform:translateX(0%) rotate(0deg); }
+  }
+</style>
+</head>
+<body>
+
+  <div id="splash">
+    <canvas id="particleCanvas"></canvas>
+    <img id="logo" src="{{ url_for('static', filename='images/load.gif') }}" alt="Intro Logo">
+  </div>
+
+  <script>
+    // Auto redirect after 3 seconds
+    setTimeout(() => {
+      window.location.href = "{{ url_for('index') }}";
+    }, 3000);
+  </script>
+
+</body>
+</html>

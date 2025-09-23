@@ -1,0 +1,417 @@
+{% extends "base.html" %}
+{% block title %}about{% endblock %}
+
+{% block content %}
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a2980, #26d0ce);
+            color: #fff;
+            min-height: 100vh;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        .weather-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.2;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="%230099ff" d="M0,224L48,213.3C96,203,192,181,288,160C384,139,480,117,576,122.7C672,128,768,160,864,170.7C960,181,1056,171,1152,165.3C1248,160,1344,160,1392,160L1440,160L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>'), url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="%2300ccff" d="M0,96L48,112C96,128,192,160,288,170.7C384,181,480,171,576,165.3C672,160,768,160,864,144C960,128,1056,96,1152,85.3C1248,75,1344,85,1392,90.7L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>');
+            background-position: bottom;
+            background-repeat: no-repeat;
+            background-size: 100%;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            margin-bottom: 40px;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 24px;
+            font-weight: 700;
+        }
+        
+        .logo i {
+            color: #ffde59;
+            font-size: 32px;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+        
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            padding: 5px 10px;
+            border-radius: 20px;
+        }
+        
+        nav a:hover, nav a.active {
+            background: rgba(255, 255, 255, 0.1);
+            color: #ffde59;
+        }
+        
+        .hero {
+            display: block;
+            text-align: center;
+            margin-top: 100px;
+            margin-bottom: 50px;
+            height: fit-content
+        }
+        
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+        
+        .interactive-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+        
+        .card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 25px;
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+            background: rgba(255, 255, 255, 0.15);
+        }
+        
+        .card h3 {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .card i {
+            font-size: 24px;
+            color: #ffde59;
+        }
+        
+        .team-section {
+            margin-bottom: 60px;
+        }
+        
+        .team-section h2 {
+            text-align: center;
+            margin-bottom: 40px;
+            font-size: 2.5rem;
+        }
+        
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+        }
+        
+        .team-member {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 20px;
+            transition: transform 0.3s;
+        }
+        
+        .team-member:hover {
+            transform: scale(1.05);
+            background: rgba(255, 255, 255, 0.15);
+        }
+        
+        .team-member img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 15px;
+            border: 3px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .team-member h3 {
+            margin-bottom: 5px;
+        }
+        
+        .team-member p {
+            color: #ffde59;
+            margin-bottom: 15px;
+        }
+        
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+        
+        .social-links a {
+            color: #fff;
+            font-size: 18px;
+            transition: color 0.3s;
+        }
+        
+        .social-links a:hover {
+            color: #ffde59;
+        }
+        
+        .interactive-weather {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        
+        .interactive-weather h2 {
+            margin-bottom: 20px;
+            font-size: 2.2rem;
+        }
+        
+        .weather-toggle {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .weather-toggle button {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 30px;
+            color: #fff;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .weather-toggle button:hover, .weather-toggle button.active {
+            background: #ffde59;
+            color: #1a2980;
+        }
+        
+        .weather-display {
+            min-height: 200px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+        }
+        
+        .weather-icon {
+            font-size: 64px;
+            color: #ffde59;
+        }
+        
+        .weather-text {
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            nav ul {
+                gap: 15px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .footer-content {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+        
+        <section class="hero">
+            <h1>About AtmosAPI</h1>
+            <p>We're dedicated to providing the most accurate and detailed weather information to help you plan your day with confidence. Our team of meteorologists and developers work around the clock to bring you the latest forecasts and weather insights.</p>
+        </section>
+        
+        <section class="interactive-section">
+            <div class="card">
+                <h3><i class="fas fa-bullseye"></i> Our Mission</h3>
+                <p>To deliver precise, reliable weather data with an intuitive interface that makes planning easier for everyone from daily commuters to outdoor enthusiasts.</p>
+            </div>
+            <div class="card">
+                <h3><i class="fas fa-chart-line"></i> Our Technology</h3>
+                <p>We use advanced forecasting models, satellite data, and machine learning algorithms to provide the most accurate predictions possible.</p>
+            </div>
+            <div class="card">
+                <h3><i class="fas fa-globe-americas"></i> Our Coverage</h3>
+                <p>WeatherInsights provides forecasts for over 100,000 locations worldwide, with hyperlocal data for major metropolitan areas.</p>
+            </div>
+        </section>
+        
+        <section class="team-section">
+            <h2>Meet Our Team</h2>
+            <div class="team-grid">
+                <div class="team-member">
+                    <img src="{{ url_for('static', filename='images/rahul.jpeg.jpg') }}" alt="Rahul">
+                    <!-- <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1000&q=80" alt="Team Member"> -->
+                    <h3>Rahul Chauhan</h3>
+                    <p>Member 1</p>
+                    <div class="social-links">
+                        <a href="https://github.com/RAHUL75000"><i class="fab fa-github"></i></a>
+                        <a href="https://www.linkedin.com/in/rahul-chauhan-aa440a27b/"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+                <div class="team-member">
+                    <img src="{{ url_for('static', filename='images/photo_divyansh.jpg') }}" alt="Divyansh">
+                    <!-- <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1000&q=80" alt="Team Member"> -->
+                    <h3>Divyansh Bansal</h3>
+                    <p>Member 2</p>
+                    <div class="social-links">
+                        <a href="https://github.com/divy-0508"><i class="fab fa-github"></i></a>
+                        <a href="www.linkedin.com/in/divyansh-bansal-"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+                <!-- <div class="team-member">
+                    <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1000&q=80" alt="Team Member">
+                    <h3>David Kim</h3>
+                    <p>Software Developer</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+                <div class="team-member">
+                    <img src="https://images.unsplash.com/photo-1614289371518-722f2615943d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1000&q=80" alt="Team Member">
+                    <h3>Emily Rodriguez</h3>
+                    <p>UX Designer</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div> -->
+            </div>
+        </section>
+        
+        <section class="interactive-weather">
+            <h2>How Weather Impacts Our Lives</h2>
+            <div class="weather-toggle">
+                <button class="active" data-weather="sunny">Sunny</button>
+                <button data-weather="rainy">Rainy</button>
+                <button data-weather="snowy">Snowy</button>
+                <button data-weather="windy">Windy</button>
+            </div>
+            <div class="weather-display">
+                <i class="fas fa-sun weather-icon" id="weather-icon"></i>
+                <p class="weather-text" id="weather-text">Sunny weather increases serotonin levels, boosting mood and energy. It's the perfect time for outdoor activities and vitamin D absorption.</p>
+            </div>
+        </section>
+    </div>
+{% block scripts %}
+    <script>
+        // Interactive weather buttons
+        const weatherButtons = document.querySelectorAll('.weather-toggle button');
+        const weatherIcon = document.getElementById('weather-icon');
+        const weatherText = document.getElementById('weather-text');
+        
+        // Weather data
+        const weatherData = {
+            sunny: {
+                icon: 'fa-sun',
+                text: 'Sunny weather increases serotonin levels, boosting mood and energy. It\'s the perfect time for outdoor activities and vitamin D absorption.'
+            },
+            rainy: {
+                icon: 'fa-cloud-rain',
+                text: 'Rainy days can lower energy levels but are great for relaxation and indoor activities. They also play a crucial role in replenishing water sources and supporting plant life.'
+            },
+            snowy: {
+                icon: 'fa-snowflake',
+                text: 'Snow affects transportation but provides opportunities for winter sports. It also helps insulate the ground and provides water resources when it melts in spring.'
+            },
+            windy: {
+                icon: 'fa-wind',
+                text: 'Windy conditions can impact outdoor plans but are excellent for wind energy generation. They also help disperse seeds and pollen, supporting plant reproduction.'
+            }
+        };
+        
+        // Add event listeners to buttons
+        weatherButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Remove active class from all buttons
+                weatherButtons.forEach(btn => btn.classList.remove('active'));
+                
+                // Add active class to clicked button
+                button.classList.add('active');
+                
+                // Get weather type from data attribute
+                const weatherType = button.getAttribute('data-weather');
+                
+                // Update weather display
+                weatherIcon.className = `fas ${weatherData[weatherType].icon} weather-icon`;
+                weatherText.textContent = weatherData[weatherType].text;
+            });
+        });
+        
+        // Add hover effect to cards with delay
+        const cards = document.querySelectorAll('.card');
+        cards.forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.style.transition = 'transform 0.3s, box-shadow 0.3s, background 0.3s';
+            });
+            
+            card.addEventListener('mouseleave', () => {
+                card.style.transition = 'transform 0.5s, box-shadow 0.5s, background 0.5s';
+            });
+        });
+    </script>
+{% endblock %}
+{% endblock %}
