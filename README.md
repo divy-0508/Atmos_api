@@ -20,4 +20,4 @@
 
 | Live App | Screenshot |
 |---------|------------|
-| [👉 Try it here**](https://storage.appilix.com/uploads/app-apk-68d29b6834934-1758632808.apk) | ![App Screenshot](home.jpg) |
+| [👉 Try it here**](https://warehouse.appilix.com/uploads/app-apk-68d42e53e4fd6-1758735955.apk) | ![App Screenshot](home.jpg) |
