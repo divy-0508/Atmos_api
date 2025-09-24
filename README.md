@@ -20,4 +20,4 @@
 
 | Live App | Screenshot |
 |---------|------------|
-| [👉 Try it here**](https://warehouse.appilix.com/uploads/app-apk-68d42e53e4fd6-1758735955.apk) | ![App Screenshot](home.jpg) |
+| [👉  try apk**](https://warehouse.appilix.com/uploads/app-apk-68d42e53e4fd6-1758735955.apk) [👉 Try web**](http://eggplantkoala.onpella.app/) | ![App Screenshot](home.jpg) |
